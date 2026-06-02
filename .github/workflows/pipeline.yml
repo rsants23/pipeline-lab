@@ -43,3 +43,5 @@ jobs:
               echo " 2. contextos: Acesso a informarções do workflow, job, runner, etc"
               echo ""
               echo " Total de variaveis e contextos: 2 "
+              
+            
