@@ -38,7 +38,7 @@ jobs:
       - name: Variaveis e Contexto
         run: |
               echo " == VARIAVEIS E CONTEXTO == "
-              echo " Variaveis env: { env.NODE_VERSION } "
+              echo " Variaveis env: ${{ env.NODE_VERSION }} "
               echo " 1, ENV: Definição de variáveis de ambiente"
               echo " 2. contextos: Acesso a informarções do workflow, job, runner, etc"
               echo ""
