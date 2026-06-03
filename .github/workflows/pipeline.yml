@@ -1,47 +1,36 @@
-name: "Estruturas de Diretorios e Arquivos"
+name:  Hello Github Actions
 
-on: 
+on:
   push:
+    branches: [ main ]
+  pull_request:
     branches: [ main ]
   workflow_dispatch:
 
-env:
-  NODE_VERSION: '18'
-
 jobs:
-  demonstrando-estrutura:
-    name: "Demonstrar Estrutura Básica"
+  Hello-job:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do Codigo
+      - name: Checkout Codigo
         uses: actions/checkout@v4
-
-      - name: Mostrar estrutura .github/workflows
+    
+      - name: Executar Hello World
+        run: echo "Hello Github Actions"
+    
+      - name:
         run: |
-             echo " == ESTRUTURA DE DIRETORIOS E ARQUIVOS .github/workflows == "
-             ls -la .github/workflows
-             echo ""
-             echo " Total de workflows: $(ls -l .github/workflows | wc -l) "
+         echo "Sistema Operacional: ${{ runner.os }}"
+         echo "Diretorio atuall: $(pwd)"
+         echo "Data Atual: $(date)"
+         echo "Usuario: $(whoami)"
 
-      - name: Elementos Obrigatorios do workflow
-        run: |
-              echo " == ELEMENTOS OBRIGATORIOS DO WORKFLOW == "
-              echo " 1. name: Nome do workflow"
-              echo " 2. on: Evento que aciona o workflow"
-              echo " 3. jobs: Conjunto de tarefas a serem executadas"
-              echo " 4. runs-on: Ambiente onde o job será executado"
-              echo " 5. steps: Passos a serem executados dentro do job" 
-              echo ""
-              echo " Total de elementos obrigatorios: 5 "
+      - name: Listar aqruivos do repositorio
+        run: ls -la
 
-      - name: Variaveis e Contexto
+      - name: Comando Multiplas Linhas
         run: |
-              echo " == VARIAVEIS E CONTEXTO == "
-              echo " Variaveis env: ${{ env.NODE_VERSION }} "
-              echo " 1, ENV: Definição de variáveis de ambiente"
-              echo " 2. contextos: Acesso a informarções do workflow, job, runner, etc"
-              echo ""
-              echo " Total de variaveis e contextos: 2 "
-              
-            
+         echo "Este é o Lab 01 do curso de Github Actions"
+         echo "Workflow executado com Sucesso"
+         echo "Pronto para o proximo Lab"
+         
