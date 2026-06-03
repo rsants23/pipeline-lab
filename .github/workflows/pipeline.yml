@@ -18,7 +18,7 @@ jobs:
       - name: Executar Hello World
         run: echo "Hello Github Actions"
     
-      - name:
+      - name: Mostrar informação do sistema
         run: |
          echo "Sistema Operacional: ${{ runner.os }}"
          echo "Diretorio atuall: $(pwd)"
