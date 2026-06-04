@@ -73,7 +73,7 @@ jobs:
        run: |
           echo "Gerando artefatos de build..."
           mkdir -p build
-          echo "Aplicação compilada em $(date)" > build/app.jar"
+          echo "Aplicação compilada em $(date)" > build/app.jar
           echo "Artefatos de build gerados com sucesso!"
 
      - name: Upload Build Artifacts
