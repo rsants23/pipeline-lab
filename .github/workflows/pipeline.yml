@@ -23,6 +23,6 @@ jobs:
         run: |
           echo "RELATORIO DIARIO AUTOMATIZADO"
           echo "=================================="
-          echo "Total de commit: $(git rev-list -- all --count)"
+          echo "Total de commit: $(git rev-list --all --count)"
           echo "Contribuidores unicos: $(git shortlog -s -n | wc -l)"
           echo "Ultimo commit: $(git log -1 --pretty=format:'%h - %s (%an, %ar)')"
