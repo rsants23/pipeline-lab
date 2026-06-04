@@ -5,7 +5,7 @@ on:
   workflow_dispatch: # Permite execução manual do workflow
 
 jobs:
-  escheduled-job:
+  scheduled-job:
     runs-on: ubuntu-latest
 
     steps:
