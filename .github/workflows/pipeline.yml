@@ -1,36 +1,42 @@
-name:  Hello Github Actions
+name: "Estrutura de Diretorio e Arquivos"
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
+env:
+    NODE_VERSION: "18"
+
 jobs:
-  Hello-job:
+  demonstrar-estrutura:
+    name: "Demonstrar Estrutura de Diretório e Arquivos"
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Codigo
+      - name: "Checkout do Código"
         uses: actions/checkout@v4
-    
-      - name: Executar Hello World
-        run: echo "Hello Github Actions"
-    
-      - name: Mostrar informação do sistema
-        run: |
-         echo "Sistema Operacional: ${{ runner.os }}"
-         echo "Diretorio atuall: $(pwd)"
-         echo "Data Atual: $(date)"
-         echo "Usuario: $(whoami)"
 
-      - name: Listar aqruivos do repositorio
-        run: ls -la
-
-      - name: Comando Multiplas Linhas
+      - name: Mostrar estrutura .github/workflows
         run: |
-         echo "Este é o Lab 01 do curso de Github Actions"
-         echo "Workflow executado com Sucesso"
-         echo "Pronto para o proximo Lab"
-         
+          echo "=== ESTRUTURA DO DIRETÓRIO .github/workflows ==="
+          ls -la .github/workflows
+          echo ""
+          echo "Total de workflows: $(ls -la .github/workflows | wc -l)"
+          echo ""
+          echo "Total de workflow: $(ls -l .github/workflows/*.y*ml 2>/dev/null | wc -l)"
+        
+      - name: Elementos obrigadorios do workflow
+        run: |
+            echo "=== ELEMENTOS OBRIGATÓRIOS ==="
+            echo "1. name: Nome do workflow"
+            echo "2. on: Eventos de trigger (push, workflow_dispatch)"
+            echo "3. jobs: Tarefas a executar"
+      
+      - name: Variaveis e contexto
+        run: |
+            echo "=== VARIÁVEIS E CONTEXTO ==="
+            echo "Variavel env: ${{ env.NODE_VERSION }}"
+            echo "Repositorio: ${{ github.repository }}"
+            echo "Branch: ${{ github.ref_name }}"
+            echo "Actor: ${{ github.actor }}"
