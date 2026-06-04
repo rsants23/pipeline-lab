@@ -1,28 +1,33 @@
-on:
-  schedule:
-    # Executa as 21:51 Horário de Brasília (UTC-3)
-    - cron: "55 00 * * *" # Runs e very day at midnight
-  workflow_dispatch: # Permite execução manual do workflow
+name: Somente quando envia PUSH Trigger Workflow (Algo relevante para o projeto)
+
+### Executar Apenas em Push
+on:  
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'src/**' # CRIAR ESSES ARQUIVOS PARA FUNCIONAR
+      - 'README.md' # CRIAR ESSE ARQUIVO PARA FUNCIONAR
 
 jobs:
-  scheduled-job:
+  push-job:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Informações do Schedule
+      - name: Informações do Push
         run: |
-          echo "Workflow disparado por SCHEDULE"
-          echo "Data e Hora: $(date)"
-          echo "Hora UTC: $(date -u)"
-          echo "Timezone: $(date +%Z)"
+          echo "Push Triggered Workflow"
+          echo "Commit: ${{ github.sha }}"
+          echo "Autor: ${{ github.actor }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Repositorio: ${{ github.repository }}"
 
-      - name: Relatorio diario automatizado
+      - name: Listar arquivos modifificados
         run: |
-          echo "RELATORIO DIARIO AUTOMATIZADO"
-          echo "=================================="
-          echo "Total de commit: $(git rev-list --all --count)"
-          echo "Contribuidores unicos: $(git shortlog -s -n | wc -l)"
-          echo "Ultimo commit: $(git log -1 --pretty=format:'%h - %s (%an, %ar)')"
+          echo "Arquivos modificados no push:"
+          ls -la
+          

@@ -1,0 +1,28 @@
+on:
+  schedule:
+    # Executa as 21:51 Horário de Brasília (UTC-3)
+    - cron: "55 00 * * *" # Runs e very day at midnight
+  workflow_dispatch: # Permite execução manual do workflow
+
+jobs:
+  scheduled-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Informações do Schedule
+        run: |
+          echo "Workflow disparado por SCHEDULE"
+          echo "Data e Hora: $(date)"
+          echo "Hora UTC: $(date -u)"
+          echo "Timezone: $(date +%Z)"
+
+      - name: Relatorio diario automatizado
+        run: |
+          echo "RELATORIO DIARIO AUTOMATIZADO"
+          echo "=================================="
+          echo "Total de commit: $(git rev-list --all --count)"
+          echo "Contribuidores unicos: $(git shortlog -s -n | wc -l)"
+          echo "Ultimo commit: $(git log -1 --pretty=format:'%h - %s (%an, %ar)')"
