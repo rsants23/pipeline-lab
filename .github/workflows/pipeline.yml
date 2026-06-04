@@ -1,42 +1,28 @@
-name: "Estrutura de Diretorio e Arquivos"
-
 on:
-  push:
-    branches: [main]
-  workflow_dispatch:
-
-env:
-    NODE_VERSION: "18"
+  schedule:
+    # Executa as 21:51 Horário de Brasília (UTC-3)
+    - cron: "55 00 * * *" # Runs e very day at midnight
+  workflow_dispatch: # Permite execução manual do workflow
 
 jobs:
-  demonstrar-estrutura:
-    name: "Demonstrar Estrutura de Diretório e Arquivos"
+  escheduled-job:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Checkout do Código"
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Mostrar estrutura .github/workflows
+      - name: Informações do Schedule
         run: |
-          echo "=== ESTRUTURA DO DIRETÓRIO .github/workflows ==="
-          ls -la .github/workflows
-          echo ""
-          echo "Total de workflows: $(ls -la .github/workflows | wc -l)"
-          echo ""
-          echo "Total de workflow: $(ls -l .github/workflows/*.y*ml 2>/dev/null | wc -l)"
-        
-      - name: Elementos obrigadorios do workflow
+          echo "Workflow disparado por SCHEDULE"
+          echo "Data e Hora: $(date)"
+          echo "Hora UTC: $(date -u)"
+          echo "Timezone: $(date +%Z)"
+
+      - name: Relatorio diario automatizado
         run: |
-            echo "=== ELEMENTOS OBRIGATÓRIOS ==="
-            echo "1. name: Nome do workflow"
-            echo "2. on: Eventos de trigger (push, workflow_dispatch)"
-            echo "3. jobs: Tarefas a executar"
-      
-      - name: Variaveis e contexto
-        run: |
-            echo "=== VARIÁVEIS E CONTEXTO ==="
-            echo "Variavel env: ${{ env.NODE_VERSION }}"
-            echo "Repositorio: ${{ github.repository }}"
-            echo "Branch: ${{ github.ref_name }}"
-            echo "Actor: ${{ github.actor }}"
+          echo "RELATORIO DIARIO AUTOMATIZADO"
+          echo "=================================="
+          echo "Total de commit: $(git rev-list --count)"
+          echo "Contribuidores unicos: $(git shortlog -s -n | wc -l)"
+          echo "Ultimo commit: $(git log -1 --pretty=format:'%h - %s (%an, %ar)')"
