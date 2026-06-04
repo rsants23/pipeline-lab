@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        on: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [16, 18, 20]
         include:
             #Configurações específicas para cada ambiente
@@ -67,4 +67,3 @@ jobs:
       run: |
         echo "Coletando resultados de todos os testes da matrix"
         echo "Todos os testes da matrix foram concluídos com sucesso"
-        
