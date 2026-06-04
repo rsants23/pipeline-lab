@@ -1,34 +1,83 @@
-name: Issue Triggered Workflow
-# Permissoes para permitir comentarios automaticos
-permissions:
-  issues: write
+name: Jobs Paralelos
 
-# Executa quando issues sao abertas, editadas, fechadas
 on:
-  issues:
-    types: [opened, edited, closed, labeled]
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  issue-job:
+  # Job 1: Analise de codigo
+  code-analysis:
     runs-on: ubuntu-latest
     steps:
-      - name: Informações da Issue
-        run: |
-          echo "Worflow acionado por uma nova Issue!"
-          echo "Ação: ${{ github.event.action }}"
-          echo "Issue: ${{ github.event.issue.number }}"
-          echo "Titulo: ${{ github.event.issue.title }}"
-          echo "Autor: ${{ github.event.issue.user.login }}"
-          echo "Labels: ${{ join(github.event.issue.labels.*.name, ', ') }}"
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Resposta automatica (nova Issue)
-        if: github.event.action == 'opened'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Obrigado por abrir esta Issue! Nossa equipe irá analisar e responder o mais breve possível.'
-            })
+      - name: Analise de sintaxe
+        run: |
+          echo "Running code analysis..."
+          sleep 3
+          echo "Code analysis completed successfully!"
+      - name: Verificar codigo padrão
+        run: |
+          echo "Verificando padrão do código..."
+          sleep 2
+          echo "Padrão Verificado com Sucesso!"
+      - name: Upload code analysis report
+        run: |
+          echo "Fazendo upload do relatório de análise de código..."
+          echo "relatorio de analise gerado em $(date)" > code-analysis-report.txt
+          echo "Relatorio Salvo!"
+
+    # Job 2: Teste unitarios (Exxecutado em paralelo com code-analysis)
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+     - name: Checkout code
+       uses: actions/checkout@v4
+
+     - name: Configurar Ambiente de Teste
+       run: |
+          echo "Configurando ambiente de teste..."
+          sleep 2
+          echo "Ambiente de teste configurado com sucesso!"
+     - name: Executar Testes Unitários
+       run: |
+          echo "Executando testes unitários..."
+          sleep 4
+          echo "Todos os testes passaram (15/15)"
+     - name: Gerar relatorio de cobertura
+       run: |
+          echo "Gerando relatorio de cobertura"
+          sleep 1
+          echo "Cobertura de teste: 85%"
+
+    # Job 3: Build da aplicação (Executa em paralelo)
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     - name: Checkout code
+       uses: actions/checkout@v4
+
+     - name: Configurar ambiente de build
+       run: |
+          echo "Configurando ambiente de build..."
+          sleep 2
+          echo "Ambiente de build configurado com sucesso!"
+     - name: Copilar Aplicação
+       run: |
+          echo "Compilando aplicação..."
+          sleep 5
+          echo "Build Concluido com sucesso!"
+     - name: Gerar Artefatos de Build
+       run: |
+          echo "Gerando artefatos de build..."
+          mkdir -p build
+          echo "Aplicação compilada em $(date)" > build/app.jar"
+          echo "Artefatos de build gerados com sucesso!"
+
+     - name: Upload Build Artifacts
+       uses: actions/upload-artifact@v4
+       with:
+         name: build-artifacts
+         path: build/     
