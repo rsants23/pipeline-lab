@@ -1,33 +1,34 @@
-name: Somente quando envia PUSH Trigger Workflow (Algo relevante para o projeto)
+name: Issue Triggered Workflow
+# Permissoes para permitir comentarios automaticos
+permissions:
+  issues: write
 
-### Executar Apenas em Push
-on:  
-  push:
-    branches:
-      - main
-      - develop
-    paths:
-      - 'src/**' # CRIAR ESSES ARQUIVOS PARA FUNCIONAR
-      - 'README.md' # CRIAR ESSE ARQUIVO PARA FUNCIONAR
+# Executa quando issues sao abertas, editadas, fechadas
+on:
+  issues:
+    types: [opened, edited, closed, labeled]
 
 jobs:
-  push-job:
+  issue-job:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Informações do Push
+      - name: Informações da Issue
         run: |
-          echo "Push Triggered Workflow"
-          echo "Commit: ${{ github.sha }}"
-          echo "Autor: ${{ github.actor }}"
-          echo "Branch: ${{ github.ref_name }}"
-          echo "Repositorio: ${{ github.repository }}"
+          echo "Worflow acionado por uma nova Issue!"
+          echo "Ação: ${{ github.event.action }}"
+          echo "Issue: ${{ github.event.issue.number }}"
+          echo "Titulo: ${{ github.event.issue.title }}"
+          echo "Autor: ${{ github.event.issue.user.login }}"
+          echo "Labels: ${{ join(github.event.issue.labels.*.name, ', ') }}"
 
-      - name: Listar arquivos modifificados
-        run: |
-          echo "Arquivos modificados no push:"
-          ls -la
-          
+      - name: Resposta automatica (nova Issue)
+        if: github.event.action == 'opened'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Obrigado por abrir esta Issue! Nossa equipe irá analisar e responder o mais breve possível.'
+            })

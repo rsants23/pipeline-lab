@@ -1,0 +1,33 @@
+name: Somente quando envia PUSH Trigger Workflow (Algo relevante para o projeto)
+
+### Executar Apenas em Push
+on:  
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'src/**' # CRIAR ESSES ARQUIVOS PARA FUNCIONAR
+      - 'README.md' # CRIAR ESSE ARQUIVO PARA FUNCIONAR
+
+jobs:
+  push-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Informações do Push
+        run: |
+          echo "Push Triggered Workflow"
+          echo "Commit: ${{ github.sha }}"
+          echo "Autor: ${{ github.actor }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Repositorio: ${{ github.repository }}"
+
+      - name: Listar arquivos modifificados
+        run: |
+          echo "Arquivos modificados no push:"
+          ls -la
+          
